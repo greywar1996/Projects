@@ -1,0 +1,696 @@
+{
+	"info": {
+		"_postman_id": "d1efef1d-dbbd-4240-967a-c984f79771ea",
+		"name": "Работа с плейлистами",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "38123017"
+	},
+	"item": [
+		{
+			"name": "Video in playlist",
+			"item": [
+				{
+					"name": "Возвращает список плейлистов автора",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {\r",
+									"    pm.response.to.have.status(200);\r",
+									"});"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/api/playlist/user/{{user_id}}/",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"playlist",
+								"user",
+								"{{user_id}}",
+								""
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Получение информации по кастомному плейлисту",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {\r",
+									"    pm.response.to.have.status(200);\r",
+									"});"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/api/playlist/custom/",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"playlist",
+								"custom",
+								""
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Удаление кастомного плейлиста",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 404\", function () {\r",
+									"    pm.response.to.have.status(404);\r",
+									"});"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/api/playlist/custom/{{playlist_id}}",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"playlist",
+								"custom",
+								"{{playlist_id}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Создание кастомного плейлиста",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 200 or 201\", function () {\r",
+									"    pm.expect(pm.response.code).to.be.oneOf([200, 201]);\r",
+									"});\r",
+									"    let jsonData = pm.response.json();\r",
+									"    pm.environment.set(\"playlist_id\", jsonData.id);\r",
+									"\r",
+									"pm.test(\"Response contains id and title\", function () {\r",
+									"    let jsonData = pm.response.json();\r",
+									"    pm.expect(jsonData).to.have.property(\"id\");\r",
+									"    pm.expect(jsonData).to.have.property(\"title\");\r",
+									"});"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"description\": \"Привет\",\r\n    \"title\": \"Test playlist\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{base_url}}/api/playlist/custom/",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"playlist",
+								"custom",
+								""
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Получение информации по кастомному плейлисту после создания",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {\r",
+									"    pm.response.to.have.status(200);\r",
+									"});"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/api/playlist/custom/{{playlist_id}}",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"playlist",
+								"custom",
+								"{{playlist_id}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Возвращает список плейлистов автора после создания пустого плейлиста",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {\r",
+									"    pm.response.to.have.status(200);\r",
+									"});"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/api/playlist/user/{{user_id}}/?allow_owner_empty=1",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"playlist",
+								"user",
+								"{{user_id}}",
+								""
+							],
+							"query": [
+								{
+									"key": "allow_owner_empty",
+									"value": "1"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Добавление одного видео в плейлист",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 200 or 201\", function () {\r",
+									"    pm.expect(pm.response.code).to.have.oneOf([200, 201]);\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Playlise updated successfully\", function () {\r",
+									"    let jsonData = pm.response.json();\r",
+									"    pm.expect(jsonData).to.be.an(\"object\");\r",
+									"});"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"video_ids\" : [\r\n        \"4d3c39ba12d3fcf752ef1519dc005a50\"\r\n    ]\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{base_url}}/api/playlist/custom/{{playlist_id}}",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"playlist",
+								"custom",
+								"{{playlist_id}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Получение информации по кастомному плейлисту после добавления видео",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {\r",
+									"    pm.response.to.have.status(200);\r",
+									"});"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/api/playlist/custom/{{playlist_id}}",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"playlist",
+								"custom",
+								"{{playlist_id}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Возвращает список плейлистов автора после добавления видео в плейлист",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {\r",
+									"    pm.response.to.have.status(200);\r",
+									"});"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/api/playlist/user/{{user_id}}",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"playlist",
+								"user",
+								"{{user_id}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Добавление двух видео в плейлист",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 200 or 201\", function () {\r",
+									"    pm.expect(pm.response.code).to.have.oneOf([200, 201]);\r",
+									"});"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"video_ids\" : [\r\n        \"6faabb25e0c9386fffb5e69da8e31e47\",\r\n        \"d9de343f15da4e3ef8b70d257a02f172\"\r\n    ]\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{base_url}}/api/playlist/custom/{{playlist_id}}",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"playlist",
+								"custom",
+								"{{playlist_id}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Возвращает список плейлистов автора после добавления двух видео в плейлист",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {\r",
+									"    pm.response.to.have.status(200);\r",
+									"});"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/api/playlist/user/{{user_id}}",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"playlist",
+								"user",
+								"{{user_id}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Удаление видео из плейлиста",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 200 or 204\", function () {\r",
+									"    pm.expect(pm.response.code).to.be.oneOf([200, 204]);\r",
+									"});"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/api/playlist/custom/{{playlist_id}}/4d3c39ba12d3fcf752ef1519dc005a50",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"playlist",
+								"custom",
+								"{{playlist_id}}",
+								"4d3c39ba12d3fcf752ef1519dc005a50"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Возвращает список видео в плейлисте",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {\r",
+									"    pm.response.to.have.status(200);\r",
+									"});"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/api/playlist/custom/{{playlist_id}}/videos",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"playlist",
+								"custom",
+								"{{playlist_id}}",
+								"videos"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Удаление кастомного плейлиста",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 200 or 204\", function () {\r",
+									"    pm.expect(pm.response.code).to.be.oneOf([200, 204]);\r",
+									"});"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/api/playlist/custom/{{playlist_id}}",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"playlist",
+								"custom",
+								"{{playlist_id}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Получение информации по кастомному плейлисту после удаления",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 404\", function () {\r",
+									"    pm.response.to.have.status(404);\r",
+									"});"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/api/playlist/custom/{{playlist_id}}",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"playlist",
+								"custom",
+								"{{playlist_id}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Редактирование кастомного плейлиста",
+					"request": {
+						"method": "PATCH",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"description\": \"не звони сюда\"\r\n\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{base_url}}/api/playlist/custom/{{playlist_id}}",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"playlist",
+								"custom",
+								"{{playlist_id}}"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Playlist Negative",
+			"item": [
+				{
+					"name": "Добавление двух уже добавленных видео в плейлист",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 400 or 409\", function () {\r",
+									"    pm.expect(pm.response.code).to.be.oneOf([400, 409]);\r",
+									"});"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"video_ids\" : [\r\n        \"4d3c39ba12d3fcf752ef1519dc005a50\",\r\n        \"d9de343f15da4e3ef8b70d257a02f172\"\r\n    ]\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{base_url}}/api/playlist/custom/{{playlist_id}}",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"playlist",
+								"custom",
+								"{{playlist_id}}"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		}
+	],
+	"auth": {
+		"type": "basic",
+		"basic": [
+			{
+				"key": "password",
+				"value": "{{password}}",
+				"type": "string"
+			},
+			{
+				"key": "username",
+				"value": "{{user_name}}",
+				"type": "string"
+			}
+		]
+	},
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"type": "text/javascript",
+				"packages": {},
+				"exec": [
+					""
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"type": "text/javascript",
+				"packages": {},
+				"exec": [
+					""
+				]
+			}
+		}
+	],
+	"variable": [
+		{
+			"key": "base_url",
+			"value": "https://rutube.ru",
+			"type": "string"
+		}
+	]
+}

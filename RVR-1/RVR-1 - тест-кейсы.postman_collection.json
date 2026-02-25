@@ -1,0 +1,1536 @@
+{
+	"info": {
+		"_postman_id": "b146f5ac-cf95-4a03-8b95-29d33feb3708",
+		"name": "RVR-1 - тест-кейсы",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "38123017"
+	},
+	"item": [
+		{
+			"name": "Rating Positive",
+			"item": [
+				{
+					"name": "Получение списка рейтингов",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {\r",
+									"    pm.response.to.have.status(200);\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Response is array\", function () {\r",
+									"    pm.expect(pm.response.json()).to.be.an(\"array\");\r",
+									"});"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/api/ratings/",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"ratings",
+								""
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Создание нового рейтинга",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 200 or 201\", function () {\r",
+									"    pm.expect(pm.response.code).to.be.oneOf([200, 201]);\r",
+									"});\r",
+									"\r",
+									"let jsonData = pm.response.json();\r",
+									"pm.environment.set(\"rating_id\", jsonData.id);"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"video_id\": \"5544\",\n    \"imdb_id\": \"0798970\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{base_url}}/api/ratings/",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"ratings",
+								""
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Создание рейтинга с длиной video_id 32 символа",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 200 or 201\", function () {\r",
+									"    pm.expect(pm.response.code).to.be.oneOf([200, 201]);\r",
+									"});"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"video_id\": \"98012345678901234567890123456789\",\n    \"imdb_id\": \"780544\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{base_url}}/api/ratings/",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"ratings",
+								""
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Создание рейтинга с длиной video_id 1 символ",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 200 or 201\", function () {\r",
+									"    pm.expect(pm.response.code).to.be.oneOf([200, 201]);\r",
+									"});"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"video_id\": \"6\",\n    \"imdb_id\": \"7544673\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{base_url}}/api/ratings/",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"ratings",
+								""
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Создание рейтинга с длиной imdb_id 1 символ",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 200 or 201\", function () {\r",
+									"    pm.expect(pm.response.code).to.be.oneOf([200, 201]);\r",
+									"});"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"video_id\": \"785743892769\",\n    \"imdb_id\": \"8\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{base_url}}/api/ratings/",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"ratings",
+								""
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Создание рейтинга с длиной imdb_id 32 символа",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 200 or 201\", function () {\r",
+									"    pm.expect(pm.response.code).to.be.oneOf([200, 201]);\r",
+									"});"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"video_id\": \"567854\",\n    \"imdb_id\": \"98012345678901234567890123456789\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{base_url}}/api/ratings/",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"ratings",
+								""
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Получение рейтинга по существующему imdb_id",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {\r",
+									"    pm.response.to.have.status(200);\r",
+									"});"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/api/ratings/imdb/099990/",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"ratings",
+								"imdb",
+								"099990",
+								""
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Получение рейтинга по существующему id",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {\r",
+									"    pm.response.to.have.status(200);\r",
+									"});"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/api/ratings/1/",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"ratings",
+								"1",
+								""
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Полное обновление рейтинга. Изменение только imdb_id",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {\r",
+									"    pm.response.to.have.status(200);\r",
+									"});"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"video_id\": \"77066\",\n    \"imdb_id\": \"777101777\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{base_url}}/api/ratings/13/",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"ratings",
+								"13",
+								""
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Полное обновление рейтинга. Изменение только video_id",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {\r",
+									"    pm.response.to.have.status(200);\r",
+									"});"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"video_id\": \"66766\",\n    \"imdb_id\": \"77711777\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{base_url}}/api/ratings/13/",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"ratings",
+								"13",
+								""
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Полное обновление рейтинга. Изменение video_id и imdb_id",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {\r",
+									"    pm.response.to.have.status(200);\r",
+									"});"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"video_id\": \"7yuf4s3\",\n    \"imdb_id\": \"005515\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{base_url}}/api/ratings/13/",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"ratings",
+								"13",
+								""
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Частичное обновление рейтинга. Обновляем video_id",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {\r",
+									"    pm.response.to.have.status(200);\r",
+									"});"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "PATCH",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"video_id\": \"886688\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{base_url}}/api/ratings/13/",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"ratings",
+								"13",
+								""
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Частичное обновление рейтинга. Обновление imdb_id",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {\r",
+									"    pm.response.to.have.status(200);\r",
+									"});"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "PATCH",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"imdb_id\": \"0155510\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{base_url}}/api/ratings/13/",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"ratings",
+								"13",
+								""
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Частичное обновление рейтинга. Обновление video_id и imdb_id",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {\r",
+									"    pm.response.to.have.status(200);\r",
+									"});"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "PATCH",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"video_id\": \"19677\",\n    \"imdb_id\": \"0155385510\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{base_url}}/api/ratings/13/",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"ratings",
+								"13",
+								""
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Удаление существующего рейтинга",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 200 or 204\", function () {\r",
+									"    pm.expect(pm.response.code).to.be.oneOf([200, 204]);\r",
+									"});"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/api/ratings/14/",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"ratings",
+								"14",
+								""
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Rating Negative",
+			"item": [
+				{
+					"name": "Повторное создание рейтинга для видео, которому проставлен рейтинг",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 400 or 409\", function () {\r",
+									"    pm.expect(pm.response.code).to.be.oneOf([400, 409]);\r",
+									"});"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"video_id\": \"5544\",\n    \"imdb_id\": \"0796970\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{base_url}}/api/ratings/",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"ratings",
+								""
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Повторное присваивание рейтинга новому видео",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 400 or 409\", function () {\r",
+									"    pm.expect(pm.response.code).to.be.oneOf([400, 409]);\r",
+									"});"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"video_id\": \"65989\",\n    \"imdb_id\": \"099990\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{base_url}}/api/ratings/",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"ratings",
+								""
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Создание рейтинга с пустым значением video_id",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 400\", function () {\r",
+									"    pm.response.to.have.status(400);\r",
+									"});"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"video_id\": \"\",\n    \"imdb_id\": \"85674\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{base_url}}/api/ratings/",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"ratings",
+								""
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Создание рейтинга с длиной video_id 33 символа",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 400\", function () {\r",
+									"    pm.response.to.have.status(400);\r",
+									"});"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"video_id\": \"987012345678901234567890123456789\",\n    \"imdb_id\": \"78054498\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{base_url}}/api/ratings/",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"ratings",
+								""
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Создание рейтинга с длиной video_id 40 символов",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 400\", function () {\r",
+									"    pm.response.to.have.status(400);\r",
+									"});"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"video_id\": \"0123456789012345678901234567890123456789\",\n    \"imdb_id\": \"780544398\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{base_url}}/api/ratings/",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"ratings",
+								""
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Создание рейтинга с пустым значением imdb_id",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 400\", function () {\r",
+									"    pm.response.to.have.status(400);\r",
+									"});"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"video_id\": \"893478364\",\n    \"imdb_id\": \"\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{base_url}}/api/ratings/",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"ratings",
+								""
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Создание рейтинга с длиной imdb_id 33 символа",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 400\", function () {\r",
+									"    pm.response.to.have.status(400);\r",
+									"});"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"video_id\": \"758375934\",\n    \"imdb_id\": \"987012345678901234567890123456789\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{base_url}}/api/ratings/",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"ratings",
+								""
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Создание рейтинга без video_id",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 400\", function () {\r",
+									"    pm.response.to.have.status(400);\r",
+									"});"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"imdb_id\": \"7687597658675\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{base_url}}/api/ratings/",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"ratings",
+								""
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Создание рейтинга с длиной imdb_id 35 символов",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 400\", function () {\r",
+									"    pm.response.to.have.status(400);\r",
+									"});"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"video_id\": \"673849\",\n    \"imdb_id\": \"01234567890123456789012345678901234\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{base_url}}/api/ratings/",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"ratings",
+								""
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Создание рейтинга без imdb_id",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 400\", function () {\r",
+									"    pm.response.to.have.status(400);\r",
+									"});"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"video_id\": \"7687597658675\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{base_url}}/api/ratings/",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"ratings",
+								""
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Создание нового рейтинга при отправке в теле запроса данных типа Boolean",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 400\", function () {\r",
+									"    pm.response.to.have.status(400);\r",
+									"});"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"video_id\": true,\n    \"imdb_id\": false\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{base_url}}/api/ratings/",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"ratings",
+								""
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Создание нового рейтинга при отправке в теле запроса данных типа Array и Object",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 400\", function () {\r",
+									"    pm.response.to.have.status(400);\r",
+									"});"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"video_id\": [],\n    \"imdb_id\": {}\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{base_url}}/api/ratings/",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"ratings",
+								""
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Создание нового рейтинга при отправке в теле запроса данных типа null",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 400\", function () {\r",
+									"    pm.response.to.have.status(400);\r",
+									"});"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"video_id\": null,\n    \"imdb_id\": null\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{base_url}}/api/ratings/",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"ratings",
+								""
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Создание нового рейтинга при отправке в теле запроса данных типа integer",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 400\", function () {\r",
+									"    pm.response.to.have.status(400);\r",
+									"});"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"video_id\": 837583457394,\n    \"imdb_id\": 587486792\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{base_url}}/api/ratings/",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"ratings",
+								""
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Получение рейтинга по несуществующему imdb_id",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 404\", function () {\r",
+									"    pm.response.to.have.status(404);\r",
+									"});"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/api/ratings/imdb/783476593748909/",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"ratings",
+								"imdb",
+								"783476593748909",
+								""
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Получение рейтинга по несуществующему id",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 404\", function () {\r",
+									"    pm.response.to.have.status(404);\r",
+									"});"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/api/ratings/3/",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"ratings",
+								"3",
+								""
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Полное обновление несуществующего рейтинга",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 400 or 404\", function () {\r",
+									"    pm.expect(pm.response.code).to.have.oneOf([400, 404]);\r",
+									"});"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"video_id\": \"7583475893\",\n    \"imdb_id\": \"98084333\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{base_url}}/api/ratings/3/",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"ratings",
+								"3",
+								""
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Полное обновление рейтинга без imdb_id",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 400 or 404\", function () {\r",
+									"    pm.expect(pm.response.code).to.have.oneOf([400, 404]);\r",
+									"});"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"video_id\": \"7583475893\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{base_url}}/api/ratings/13/",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"ratings",
+								"13",
+								""
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Полное обновление рейтинга без video_id",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 400 or 404\", function () {\r",
+									"    pm.expect(pm.response.code).to.have.oneOf([400, 404]);\r",
+									"});"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"imdb_id\": \"7583475893\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{base_url}}/api/ratings/13/",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"ratings",
+								"13",
+								""
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Частичное обновление несуществующего рейтинга",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 400 or 404\", function () {\r",
+									"    pm.expect(pm.response.code).to.have.oneOf([400, 404]);\r",
+									"});"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "PATCH",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"imdb_id\": \"0155510\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "https://rating.rutube.dev/api/ratings/3/",
+							"protocol": "https",
+							"host": [
+								"rating",
+								"rutube",
+								"dev"
+							],
+							"path": [
+								"api",
+								"ratings",
+								"3",
+								""
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Удаление несуществующего рейтинга",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 400 or 404\", function () {\r",
+									"    pm.expect(pm.response.code).to.have.oneOf([400, 404]);\r",
+									"});"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/api/ratings/3/",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"ratings",
+								"3",
+								""
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		}
+	],
+	"auth": {
+		"type": "bearer",
+		"bearer": [
+			{
+				"key": "token",
+				"value": "{{token}}",
+				"type": "string"
+			}
+		]
+	},
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"type": "text/javascript",
+				"packages": {},
+				"exec": [
+					""
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"type": "text/javascript",
+				"packages": {},
+				"exec": [
+					""
+				]
+			}
+		}
+	],
+	"variable": [
+		{
+			"key": "base_url",
+			"value": "https://rating.rutube.dev",
+			"type": "string"
+		}
+	]
+}

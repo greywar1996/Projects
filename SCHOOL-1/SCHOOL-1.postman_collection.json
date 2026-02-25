@@ -1,0 +1,885 @@
+{
+	"info": {
+		"_postman_id": "02c10443-c7eb-4f09-a644-cef39d7bbfc6",
+		"name": "SCHOOL-1",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "38123017"
+	},
+	"item": [
+		{
+			"name": "AUTH",
+			"item": [
+				{
+					"name": "Регистрация пользователя в системе",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 200 or 201\", function () {\r",
+									"    pm.expect(pm.response.code).to.be.oneOf([200, 201]);\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Response contains id and email\", function () {\r",
+									"    let jsonData = pm.response.json();\r",
+									"    pm.expect(jsonData).to.have.property(\"id\");\r",
+									"    pm.expect(jsonData).to.have.property(\"email\");\r",
+									"})"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"email\": \"warwar777@mail.ru\",\n    \"password\": \"qwerty123\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{base_url}}/api/registration",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"registration"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Авторизация пользователя в системе",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Login successful\", function () {\r",
+									"    pm.response.to.have.status(200);\r",
+									"});\r",
+									"let jsonData = pm.response.json();\r",
+									"pm.environment.set(\"token\", jsonData.token);\r",
+									"pm.environment.set(\"user_id\", jsonData.user.id);\r",
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"email\": \"warwar17@mail.ru\",\n    \"password\": \"qwerty123\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{base_url}}/api/login",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"login"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Todos - Positive",
+			"item": [
+				{
+					"name": "Получение списка дел",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {\r",
+									"    pm.response.to.have.status(200);\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Response is array\", function () {\r",
+									"    pm.expect(pm.response.json()).to.be.an(\"array\");\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Each item has required fields\", function () {\r",
+									"    let jsonData = pm.response.json();\r",
+									"    pm.expect(item).to.have.property(\"id\");\r",
+									"    pm.expect(item).to.have.property(\"title\");\r",
+									"    pm.expect(item).to.have.property(\"completed\");\r",
+									"});"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{base_url}}/api/todos/{{user_id}}",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"todos",
+								"{{user_id}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Создание дела",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 201\", function () {\r",
+									"    pm.response.to.have.status(201);\r",
+									"});\r",
+									"\r",
+									"let jsonData = pm.response.json();\r",
+									"pm.environment.set(\"todo_id\", jsonData.id);\r",
+									"\r",
+									"pm.test(\"Response contains required fields\", function () {\r",
+									"    let jsonData = pm.response.json();\r",
+									"    pm.expect(jsonData).to.have.property(\"id\");\r",
+									"    pm.expect(jsonData).to.have.property(\"title\");\r",
+									"    pm.expect(jsonData).to.have.property(\"completed\");\r",
+									"    pm.expect(jsonData.title).to.eql(\"Провести урок по API\");\r",
+									"});"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"user_id\": {{user_id}},\n  \"title\": \"Провести урок по API\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{base_url}}/api/todos/",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"todos",
+								""
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Создание дела длина title 1 символ",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"user_id\": {{user_id}},\n  \"title\": \"V\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{base_url}}/api/todos/",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"todos",
+								""
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Создание дела длина title 30 символов",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"user_id\": {{user_id}},\n  \"title\": \"012345678901234567890123456789\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{base_url}}/api/todos/",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"todos",
+								""
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Отредактировать поле title в созданном деле",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {\r",
+									"    pm.response.to.have.status(200);\r",
+									"});"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"user_id\": {{user_id}},\n  \"title\": \"Edited\",\n  \"completed\": false\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{base_url}}/api/todos/{{todo_id}}",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"todos",
+								"{{todo_id}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Отредактировать поле completed в созданном деле",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {\r",
+									"    pm.response.to.have.status(200);\r",
+									"});"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"user_id\": {{user_id}},\n  \"title\": \"23413\",\n  \"completed\": true\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{base_url}}/api/todos/{{todo_id}}",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"todos",
+								"{{todo_id}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Удалить своё дело",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 200 or 204\", function () {\r",
+									"    pm.expect(pm.response.code).to.be.oneOf([200, 204]);\r",
+									"});"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/api/todos/{{user_id}}/{{todo_id}}",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"todos",
+								"{{user_id}}",
+								"{{todo_id}}"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Todos - Negative",
+			"item": [
+				{
+					"name": "Создание дела длина title 0 символов",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 400\", function () {\r",
+									"    pm.response.to.have.status(400);\r",
+									"});"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"user_id\": {{user_id}},\n  \"title\": \"\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{base_url}}/api/todos/",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"todos",
+								""
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Создание дела длина title 31 символ",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 400\", function () {\r",
+									"    pm.response.to.have.status(400);\r",
+									"});"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"user_id\": {{user_id}},\n  \"title\": \"0123456789012345678901234567890\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{base_url}}/api/todos/",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"todos",
+								""
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Создание дела длина title 40 символов",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 400\", function () {\r",
+									"    pm.response.to.have.status(400);\r",
+									"});"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"user_id\": {{user_id}},\n  \"title\": \"0123456789012345678901234567890123456789\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{base_url}}/api/todos/",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"todos",
+								""
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Создание дела без обязательного поля user id",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 400\", function () {\r",
+									"    pm.response.to.have.status(400);\r",
+									"});"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"title\": \"Провести урок по API\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{base_url}}/api/todos/",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"todos",
+								""
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Создание дела c чужим user id",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 400\", function () {\r",
+									"    pm.response.to.have.status(400);\r",
+									"});"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"user_id\": 60,\n  \"title\": \"Провести урок по API\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{base_url}}/api/todos/",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"todos",
+								""
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Создание дела без обязательного поля title",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 400\", function () {\r",
+									"    pm.response.to.have.status(400);\r",
+									"});"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"user_id\": {{user_id}}\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{base_url}}/api/todos/",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"todos",
+								""
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Создание дела с полем title другого типа данных",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 400\", function () {\r",
+									"    pm.response.to.have.status(400);\r",
+									"});"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"user_id\": {{user_id}},\n  \"title\": true\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{base_url}}/api/todos/",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"todos",
+								""
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Отредактировать поле completed в созданном деле поставить строку",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 400\", function () {\r",
+									"    pm.response.to.have.status(400);\r",
+									"});"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"user_id\": 11235,\n  \"title\": \"Провести урок по API\",\n  \"completed\": \"Diman\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{base_url}}/api/todos/{{todo_id}}",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"todos",
+								"{{todo_id}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Отредактировать дело, принадлежащее другому пользователю",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 403\", function () {\r",
+									"    pm.response.to.have.status(403);\r",
+									"});"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"user_id\": {{user_id}},\n  \"title\": \"Edited\",\n  \"completed\": true\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{base_url}}/api/todos/6482",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"todos",
+								"6482"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Удалить дело, которого нет",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 404\", function () {\r",
+									"    pm.response.to.have.status(404);\r",
+									"});"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/api/todos/{{user_id}}/{{todo_id}}",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"todos",
+								"{{user_id}}",
+								"{{todo_id}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Удалить чужое дело",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 403 or 404\", function () {\r",
+									"    pm.expect(pm.response.code).to.have.oneOf([403, 404]);\r",
+									"});"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/api/todos/{{user_id}}/6482",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"todos",
+								"{{user_id}}",
+								"6482"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		}
+	],
+	"auth": {
+		"type": "bearer",
+		"bearer": [
+			{
+				"key": "token",
+				"value": "{{token}}",
+				"type": "string"
+			}
+		]
+	},
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"type": "text/javascript",
+				"packages": {},
+				"exec": [
+					""
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"type": "text/javascript",
+				"packages": {},
+				"exec": [
+					""
+				]
+			}
+		}
+	],
+	"variable": [
+		{
+			"key": "base_url",
+			"value": "http://2.59.41.2:4300",
+			"type": "string"
+		}
+	]
+}
