@@ -53,9 +53,9 @@
 							}
 						},
 						"url": {
-							"raw": "{{baseUrl}}/auth/login",
+							"raw": "{{base_url}}/auth/login",
 							"host": [
-								"{{baseUrl}}"
+								"{{base_url}}"
 							],
 							"path": [
 								"auth",
@@ -72,8 +72,8 @@
 							"listen": "test",
 							"script": {
 								"exec": [
-									"pm.test(\"Status code is 400\", function () {\r",
-									"    pm.response.to.have.status(400);\r",
+									"pm.test(\"Status code is 401\", function () {\r",
+									"    pm.response.to.have.status(401);\r",
 									"});\r",
 									"\r",
 									"pm.test(\"Error message exists\", function () {\r",
@@ -100,9 +100,9 @@
 							}
 						},
 						"url": {
-							"raw": "{{baseUrl}}/auth/login",
+							"raw": "{{base_url}}/auth/login",
 							"host": [
-								"{{baseUrl}}"
+								"{{base_url}}"
 							],
 							"path": [
 								"auth",
@@ -156,9 +156,9 @@
 							}
 						},
 						"url": {
-							"raw": "{{baseUrl}}/auth/refresh",
+							"raw": "{{base_url}}/auth/refresh",
 							"host": [
-								"{{baseUrl}}"
+								"{{base_url}}"
 							],
 							"path": [
 								"auth",
@@ -200,9 +200,9 @@
 							}
 						},
 						"url": {
-							"raw": "{{baseUrl}}/auth/logout",
+							"raw": "{{base_url}}/auth/logout",
 							"host": [
-								"{{baseUrl}}"
+								"{{base_url}}"
 							],
 							"path": [
 								"auth",
@@ -258,23 +258,15 @@
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "{{baseUrl}}/users/me",
+							"raw": "{{base_url}}/users/me",
 							"host": [
-								"{{baseUrl}}"
+								"{{base_url}}"
 							],
 							"path": [
 								"users",
 								"me"
 							]
 						}
-					},
-					"response": []
-				},
-				{
-					"name": "Update profile",
-					"request": {
-						"method": "PUT",
-						"header": []
 					},
 					"response": []
 				}
@@ -304,7 +296,7 @@
 									"\r",
 									"const response = pm.response.json();\r",
 									"\r",
-									"pm.test(\"Prodicts array exists\", function () {\r",
+									"pm.test(\"Products array exists\", function () {\r",
 									"    pm.expect(response.products).to.be.an(\"array\");\r",
 									"});\r",
 									"\r",
@@ -326,7 +318,8 @@
 									"    pm.expect(product.title).to.be.a(\"string\");\r",
 									"    pm.expect(product.price).to.be.a(\"number\");\r",
 									"    pm.expect(product.category).to.be.a(\"string\");\r",
-									"});"
+									"});\r",
+									""
 								],
 								"type": "text/javascript",
 								"packages": {}
@@ -337,12 +330,73 @@
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "{{baseUrl}}/products",
+							"raw": "{{base_url}}/products",
 							"host": [
-								"{{baseUrl}}"
+								"{{base_url}}"
 							],
 							"path": [
 								"products"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Add product",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 200 or 201\", function () {\r",
+									"    pm.expect(pm.response.code).to.be.oneOf([200, 201]);\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Response is JSON\", function () {\r",
+									"    pm.response.to.be.json;\r",
+									"});\r",
+									"\r",
+									"const product = pm.response.json();\r",
+									"\r",
+									"pm.test(\"Product has required fields\", function () {\r",
+									"    pm.expect(product).to.have.property(\"id\");\r",
+									"    pm.expect(product).to.have.property(\"title\");\r",
+									"    pm.expect(product).to.have.property(\"price\");\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Product created with correct data\", function () {\r",
+									"    pm.expect(product.title).to.eql(\"New Test Product\");\r",
+									"    pm.expect(product.price).to.eql(777);\r",
+									"});\r",
+									"\r",
+									"pm.environment.set(\"created_product_id\", product.id);\r",
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"title\": \"New Test Product\",\r\n    \"price\": 777,\r\n    \"description\": \"qwerty\",\r\n    \"category\": \"beauty\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{base_url}}/products/add",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"products",
+								"add"
 							]
 						}
 					},
@@ -379,7 +433,7 @@
 									"    pm.expect(product.category).to.be.a(\"string\");\r",
 									"});\r",
 									"\r",
-									"pm.environment.set(\"productId\", product.id);\r",
+									"pm.environment.set(\"product_id\", product.id);\r",
 									""
 								],
 								"type": "text/javascript",
@@ -391,13 +445,13 @@
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "{{baseUrl}}/products/{{productId}}",
+							"raw": "{{base_url}}/products/{{created_product_id}}",
 							"host": [
-								"{{baseUrl}}"
+								"{{base_url}}"
 							],
 							"path": [
 								"products",
-								"{{productId}}"
+								"{{created_product_id}}"
 							]
 						}
 					},
@@ -431,113 +485,13 @@
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "{{baseUrl}}/products/567",
+							"raw": "{{base_url}}/products/{{negative_product_id}}",
 							"host": [
-								"{{baseUrl}}"
+								"{{base_url}}"
 							],
 							"path": [
 								"products",
-								"567"
-							]
-						}
-					},
-					"response": []
-				},
-				{
-					"name": "Products by id upd",
-					"event": [
-						{
-							"listen": "test",
-							"script": {
-								"exec": [
-									"pm.test(\"Status code is 200\", function () {\r",
-									"    pm.response.to.have.status(200);\r",
-									"});\r",
-									"\r",
-									"const product = pm.response.json();\r",
-									"\r",
-									"pm.test(\"Product has updated values\", function () {\r",
-									"    pm.expect(product.id).to.be.a(\"number\");\r",
-									"    pm.expect(product.price).to.be.a(\"number\");\r",
-									"});"
-								],
-								"type": "text/javascript",
-								"packages": {}
-							}
-						}
-					],
-					"request": {
-						"method": "GET",
-						"header": [],
-						"url": {
-							"raw": "{{baseUrl}}/products/{{productId}}",
-							"host": [
-								"{{baseUrl}}"
-							],
-							"path": [
-								"products",
-								"{{productId}}"
-							]
-						}
-					},
-					"response": []
-				},
-				{
-					"name": "Add product",
-					"event": [
-						{
-							"listen": "test",
-							"script": {
-								"exec": [
-									"pm.test(\"Status code is 200 or 201\", function () {\r",
-									"    pm.expect(pm.response.code).to.be.oneOf([200, 201]);\r",
-									"});\r",
-									"\r",
-									"pm.test(\"Response is JSON\", function () {\r",
-									"    pm.response.to.be.json;\r",
-									"});\r",
-									"\r",
-									"const product = pm.response.json();\r",
-									"\r",
-									"pm.test(\"Product has required fields\", function () {\r",
-									"    pm.expect(product).to.have.property(\"id\");\r",
-									"    pm.expect(product).to.have.property(\"title\");\r",
-									"    pm.expect(product).to.have.property(\"price\");\r",
-									"});\r",
-									"\r",
-									"pm.test(\"Product created with correct data\", function () {\r",
-									"    pm.expect(product.title).to.eql(\"New Test Product\");\r",
-									"    pm.expect(product.price).to.eql(777);\r",
-									"});\r",
-									"\r",
-									"pm.environment.set(\"newProductId\", product.id);\r",
-									""
-								],
-								"type": "text/javascript",
-								"packages": {}
-							}
-						}
-					],
-					"request": {
-						"method": "POST",
-						"header": [],
-						"body": {
-							"mode": "raw",
-							"raw": "{\r\n    \"title\": \"New Test Product\",\r\n    \"price\": 777,\r\n    \"description\": \"Test description\",\r\n    \"category\": \"beauty\"\r\n}",
-							"options": {
-								"raw": {
-									"language": "json"
-								}
-							}
-						},
-						"url": {
-							"raw": "{{baseUrl}}/products/add",
-							"host": [
-								"{{baseUrl}}"
-							],
-							"path": [
-								"products",
-								"add"
+								"{{negative_product_id}}"
 							]
 						}
 					},
@@ -550,14 +504,14 @@
 							"listen": "test",
 							"script": {
 								"exec": [
-									"pm.test(\"Status code is correct for create\", function () {\r",
-									"    pm.expect([200, 201]).to.include(pm.response.code);\r",
+									"pm.test(\"Status code have 400 or 404\", function () {\r",
+									"    pm.expect.(pm.response.code).to.be.oneOf([200, 201]);\r",
 									"});\r",
 									"\r",
 									"const response = pm.response.json();\r",
 									"\r",
-									"pm.test(\"Product created without title\", function () {\r",
-									"    pm.expect(response).to.not.have.property(\"title\");\r",
+									"pm.test(\"Error message exists\", function () {\r",
+									"    pm.expect(response).to.have.property(\"message\");\r",
 									"});\r",
 									""
 								],
@@ -579,9 +533,9 @@
 							}
 						},
 						"url": {
-							"raw": "{{baseUrl}}/products/add",
+							"raw": "{{base_url}}/products/add",
 							"host": [
-								"{{baseUrl}}"
+								"{{base_url}}"
 							],
 							"path": [
 								"products",
@@ -607,7 +561,8 @@
 									"pm.test(\"Product updated succesfully\", function () {\r",
 									"    pm.expect(response.title).to.eql(\"Updated product\");\r",
 									"    pm.expect(response.price).to.eql(999);\r",
-									"});"
+									"});\r",
+									""
 								],
 								"type": "text/javascript",
 								"packages": {}
@@ -627,13 +582,52 @@
 							}
 						},
 						"url": {
-							"raw": "{{baseUrl}}/products/{{productId}}",
+							"raw": "{{base_url}}/products/{{product_id}}",
 							"host": [
-								"{{baseUrl}}"
+								"{{base_url}}"
 							],
 							"path": [
 								"products",
-								"{{productId}}"
+								"{{product_id}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Products by id upd",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {\r",
+									"    pm.response.to.have.status(200);\r",
+									"});\r",
+									"\r",
+									"const product = pm.response.json();\r",
+									"\r",
+									"pm.test(\"Product has updated values\", function () {\r",
+									"    pm.expect(product.id).to.eql(\"Updated product\");\r",
+									"    pm.expect(product.price).to.eql(999);\r",
+									"});"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/products/{{product_id}}",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"products",
+								"{{product_id}}"
 							]
 						}
 					},
@@ -644,6 +638,60 @@
 		{
 			"name": "CATEGORIES",
 			"item": [
+				{
+					"name": "Categories all",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {\r",
+									"    pm.response.to.have.status(200);\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Response is JSON\", function () {\r",
+									"    pm.response.to.be.json;\r",
+									"});\r",
+									"\r",
+									"const categories = pm.response.json();\r",
+									"\r",
+									"pm.test(\"Category response is array\", function () {\r",
+									"    pm.expect(categories).to.be.an(\"array\");\r",
+									"    pm.expect(categories.length).to.be.above(0);\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Category object has required fields\", function () {\r",
+									"    const object = categories[0];\r",
+									"\r",
+									"    pm.expect(object).to.have.property(\"slug\");\r",
+									"    pm.expect(object).to.have.property(\"name\");\r",
+									"    pm.expect(object).to.have.property(\"url\");\r",
+									"    pm.expect(object.slug).to.be.a(\"string\");\r",
+									"});\r",
+									"\r",
+									"pm.environment.set(\"category_name\", categories[0].slug);"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/products/categories",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"products",
+								"categories"
+							]
+						}
+					},
+					"response": []
+				},
 				{
 					"name": "Categories",
 					"event": [
@@ -699,24 +747,16 @@
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "{{baseUrl}}/products/category/{{categoryName}}",
+							"raw": "{{base_url}}/products/category/{{category_name}}",
 							"host": [
-								"{{baseUrl}}"
+								"{{base_url}}"
 							],
 							"path": [
 								"products",
 								"category",
-								"{{categoryName}}"
+								"{{category_name}}"
 							]
 						}
-					},
-					"response": []
-				},
-				{
-					"name": "Produts by categories",
-					"request": {
-						"method": "GET",
-						"header": []
 					},
 					"response": []
 				}
@@ -752,22 +792,12 @@
 						}
 					],
 					"request": {
-						"auth": {
-							"type": "bearer",
-							"bearer": [
-								{
-									"key": "token",
-									"value": "{{access_token}}",
-									"type": "string"
-								}
-							]
-						},
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "{{baseUrl}}/carts/user/{{user_id}}",
+							"raw": "{{base_url}}/carts/user/{{user_id}}",
 							"host": [
-								"{{baseUrl}}"
+								"{{base_url}}"
 							],
 							"path": [
 								"carts",
@@ -786,7 +816,7 @@
 							"script": {
 								"exec": [
 									"pm.test(\"Status code is correct for create\", function () {\r",
-									"    pm.expect([200, 201]).to.include(pm.response.code);\r",
+									"    pm.expect(pm.response.code).to.be.oneOf([200, 201]);\r",
 									"});\r",
 									"\r",
 									"pm.test(\"Response is JSON\", function () {\r",
@@ -828,21 +858,11 @@
 						}
 					],
 					"request": {
-						"auth": {
-							"type": "bearer",
-							"bearer": [
-								{
-									"key": "token",
-									"value": "{{access_token}}",
-									"type": "string"
-								}
-							]
-						},
 						"method": "POST",
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n    \"userId\": {{user_id}},\r\n    \"products\": [\r\n        {\r\n            \"id\": {{productId}},\r\n            \"quantity\": 2\r\n        }\r\n    ]\r\n}",
+							"raw": "{\r\n    \"userId\": {{user_id}},\r\n    \"products\": [\r\n        {\r\n            \"id\": {{product_id}},\r\n            \"quantity\": 2\r\n        }\r\n    ]\r\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -850,9 +870,9 @@
 							}
 						},
 						"url": {
-							"raw": "{{baseUrl}}/carts/add",
+							"raw": "{{base_url}}/carts/add",
 							"host": [
-								"{{baseUrl}}"
+								"{{base_url}}"
 							],
 							"path": [
 								"carts",
@@ -861,19 +881,11 @@
 						}
 					},
 					"response": []
-				},
-				{
-					"name": "Update cart",
-					"request": {
-						"method": "PUT",
-						"header": []
-					},
-					"response": []
 				}
 			]
 		},
 		{
-			"name": "full cycle",
+			"name": "FULLCYCLE",
 			"item": [
 				{
 					"name": "create product",
@@ -892,7 +904,7 @@
 									"    pm.expect(response.id).to.be.a(\"number\");\r",
 									"});\r",
 									"\r",
-									"pm.environment.set(\"createdProductId\", response.id);\r",
+									"pm.environment.set(\"fc_created_product_id\", response.id);\r",
 									""
 								],
 								"type": "text/javascript",
@@ -913,64 +925,9 @@
 							}
 						},
 						"url": {
-							"raw": "{{baseUrl}}/products/add",
+							"raw": "{{base_url}}/products/add",
 							"host": [
-								"{{baseUrl}}"
-							],
-							"path": [
-								"products",
-								"add"
-							]
-						}
-					},
-					"response": []
-				},
-				{
-					"name": "create product neg",
-					"event": [
-						{
-							"listen": "test",
-							"script": {
-								"exec": [
-									"pm.test(\"Status code is 201\", function () {\r",
-									"    pm.response.to.have.status(201);\r",
-									"});\r",
-									"\r",
-									"pm.test(\"Response is JSON\", function () {\r",
-									"    pm.response.to.be.json;\r",
-									"});\r",
-									"\r",
-									"const response = pm.response.json();\r",
-									"\r",
-									"pm.test(\"Created product has ID\", function () {\r",
-									"    pm.expect(response).to.have.property(\"id\");\r",
-									"    pm.expect(response.id).to.be.a(\"number\");\r",
-									"});\r",
-									"\r",
-									"pm.environment.set(\"createdProductId\", response.id);\r",
-									""
-								],
-								"type": "text/javascript",
-								"packages": {}
-							}
-						}
-					],
-					"request": {
-						"method": "POST",
-						"header": [],
-						"body": {
-							"mode": "raw",
-							"raw": "{\r\n    \"title\": \"serega qa\",\r\n    \"price\": 373\r\n}",
-							"options": {
-								"raw": {
-									"language": "json"
-								}
-							}
-						},
-						"url": {
-							"raw": "{{baseUrl}}/products/add",
-							"host": [
-								"{{baseUrl}}"
+								"{{base_url}}"
 							],
 							"path": [
 								"products",
@@ -987,14 +944,17 @@
 							"listen": "test",
 							"script": {
 								"exec": [
-									"pm.test(\"Status code is 404 for non-persistent mock API\", function () {\r",
-									"    pm.response.to.have.status(404);\r",
+									"pm.test(\"Status code is 200\", function () {\r",
+									"    pm.response.to.have.status(200);\r",
 									"});\r",
 									"\r",
-									"const response = pm.response.json();\r",
+									"const product = pm.response.json();\r",
 									"\r",
-									"pm.test(\"Error message contains correct ID\", function () {\r",
-									"    pm.expect(response.message).to.include(pm.environment.get(\"createdProductId\"));\r",
+									"pm.test(\"Product has required fields\", function () {\r",
+									"    pm.expect(product).to.have.property(\"id\");\r",
+									"    pm.expect(product).to.have.property(\"title\");\r",
+									"    pm.expect(product).to.have.property(\"price\");\r",
+									"    pm.expect(product).to.have.property(\"category\");\r",
 									"});\r",
 									""
 								],
@@ -1007,20 +967,53 @@
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "{{baseUrl}}/products/{{createdProductId}}",
+							"raw": "{{base_url}}/products/{{fc_created_product_id}}",
 							"host": [
-								"{{baseUrl}}"
+								"{{base_url}}"
 							],
 							"path": [
 								"products",
-								"{{createdProductId}}"
+								"{{fc_created_product_id}}"
 							]
 						}
 					},
 					"response": []
 				},
 				{
-					"name": "get product Copy",
+					"name": "delete product",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code 204\", function () {\r",
+									"    pm.response.to.have.status(204);\r",
+									"});\r",
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/products/{{fc_created_product_id}}",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"products",
+								"{{fc_created_product_id}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "get product after del",
 					"event": [
 						{
 							"listen": "test",
@@ -1033,7 +1026,6 @@
 									"const response = pm.response.json();\r",
 									"\r",
 									"pm.test(\"Error message exists\", function () {\r",
-									"    const response = pm.response.json();\r",
 									"    pm.expect(response).to.have.property(\"message\");\r",
 									"});\r",
 									""
@@ -1047,72 +1039,45 @@
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "{{baseUrl}}/products/{{createdProductId}}",
+							"raw": "{{base_url}}/products/{{fc_created_product_id}}",
 							"host": [
-								"{{baseUrl}}"
+								"{{base_url}}"
 							],
 							"path": [
 								"products",
-								"{{createdProductId}}"
+								"{{fc_created_product_id}}"
 							]
 						}
 					},
 					"response": []
-				},
+				}
+			]
+		},
+		{
+			"name": "NEGATIVE",
+			"item": [
 				{
-					"name": "get product neg",
+					"name": "Create product neg",
 					"event": [
 						{
 							"listen": "test",
 							"script": {
 								"exec": [
-									"pm.test(\"Status code is 200\", function () {\r",
-									"    pm.response.to.have.status(200);\r",
+									"pm.test(\"Status code is 400 or 404\", function () {\r",
+									"    pm.expect(pm.response.code).to.be.oneOf([400, 404]);\r",
 									"});\r",
 									"\r",
-									"const product = pm.response.json();\r",
+									"pm.test(\"Response is JSON\", function () {\r",
+									"    pm.response.to.be.json;\r",
+									"});\r",
 									"\r",
-									"pm.test(\"Returned product has correst ID\", function () {\r",
-									"    pm.expect(product.id).to.eql(Number(pm.environment.get(\"createdProductId\")));\r",
-									"});\r",
-									""
-								],
-								"type": "text/javascript",
-								"packages": {}
-							}
-						}
-					],
-					"request": {
-						"method": "GET",
-						"header": [],
-						"url": {
-							"raw": "{{baseUrl}}/products/{{createdProductId}}",
-							"host": [
-								"{{baseUrl}}"
-							],
-							"path": [
-								"products",
-								"{{createdProductId}}"
-							]
-						}
-					},
-					"response": []
-				},
-				{
-					"name": "delete product",
-					"event": [
-						{
-							"listen": "test",
-							"script": {
-								"exec": [
-									"pm.test(\"Status code is 404 for mock delete\", function () {\r",
-									"    pm.response.to.have.status(404);\r",
-									"});\r",
+									"// fro MOCK API\r",
 									"\r",
 									"const response = pm.response.json();\r",
 									"\r",
-									"pm.test(\"Delete returns correct error message\", function () {\r",
-									"    pm.expect(response.message).to.include(pm.environment.get(\"createdProductId\"));\r",
+									"pm.test(\"Error response has message\", function () {\r",
+									"    pm.expect(response).to.have.property(\"message\");\r",
+									"    pm.expect(response.message).to.be.a(\"string\");\r",
 									"});\r",
 									""
 								],
@@ -1122,69 +1087,47 @@
 						}
 					],
 					"request": {
-						"method": "DELETE",
+						"method": "POST",
 						"header": [],
-						"url": {
-							"raw": "{{baseUrl}}/products/{{createdProductId}}",
-							"host": [
-								"{{baseUrl}}"
-							],
-							"path": [
-								"products",
-								"{{createdProductId}}"
-							]
-						}
-					},
-					"response": []
-				},
-				{
-					"name": "delete product neg",
-					"event": [
-						{
-							"listen": "test",
-							"script": {
-								"exec": [
-									"pm.test(\"Status code is 404 for mock delete\", function () {\r",
-									"    pm.response.to.have.status(404);\r",
-									"});\r",
-									"\r",
-									"const response = pm.response.json();\r",
-									"\r",
-									"pm.test(\"Delete returns correct error message\", function () {\r",
-									"    pm.expect(response.message).to.include(pm.environment.get(\"createdProductId\"));\r",
-									"});\r",
-									""
-								],
-								"type": "text/javascript",
-								"packages": {}
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"title\": \"serega qa !@#$%^&*()\",\r\n    \"price\": 373\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
 							}
-						}
-					],
-					"request": {
-						"method": "DELETE",
-						"header": [],
+						},
 						"url": {
-							"raw": "{{baseUrl}}/products/{{createdProductId}}",
+							"raw": "{{base_url}}/products/add",
 							"host": [
-								"{{baseUrl}}"
+								"{{base_url}}"
 							],
 							"path": [
 								"products",
-								"{{createdProductId}}"
+								"add"
 							]
 						}
 					},
 					"response": []
 				},
 				{
-					"name": "collection runner",
+					"name": "Product price minus",
 					"event": [
 						{
 							"listen": "test",
 							"script": {
 								"exec": [
-									"pm.test(\"collection executed successfully\", function () {\r",
-									"    pm.expect(true).to.be.true;\r",
+									"pm.test(\"Status code is 400\", function () {\r",
+									"    pm.expect(pm.response.code).to.have.status(400);\r",
+									"});\r",
+									"\r",
+									"// for MOCK API\r",
+									"\r",
+									"let response = pm.response.json ();\r",
+									"\r",
+									"pm.test(\"API incorrectly allows negative price\", function () {\r",
+									"    pm.expect(response.price).to.be.below(0);\r",
 									"});"
 								],
 								"type": "text/javascript",
@@ -1193,21 +1136,215 @@
 						}
 					],
 					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"title\": \"Negative price product\",\r\n    \"price\": -100\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{base_url}}/products/add",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"products",
+								"add"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Missing title",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 400 or 422\", function () {\r",
+									"    pm.expect(pm.response.code).to.be.oneOf([400, 422]);\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Response is JSON\", function () {\r",
+									"    pm.response.to.be.json;\r",
+									"});\r",
+									"\r",
+									"// for MOCK API\r",
+									"\r",
+									"let response = pm.response.json ();\r",
+									"\r",
+									"pm.test(\"Title is really missing\", function () {\r",
+									"    pm.expect(response.title).to.not.exist;\r",
+									"});"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"price\": 999\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{base_url}}/products/add",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"products",
+								"add"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Invalid token",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Should return 401 for invalid token\", function () {\r",
+									"     pm.response.to.have.status(401);\r",
+									"});\r",
+									"\r",
+									"//for MOCK API\r",
+									"\r",
+									"let json = pm.response.json ();\r",
+									"\r",
+									"pm.test(\"Message of mistake is correctly\", function () {\r",
+									"    pm.expect(json.message).to.exist;\r",
+									"    pm.expect(json).to.have.property(\"message\");\r",
+									"});"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "invalid_token_123456",
+									"type": "string"
+								}
+							]
+						},
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "{{baseUrl}}/products",
+							"raw": "{{base_url}}/auth/me",
 							"host": [
-								"{{baseUrl}}"
+								"{{base_url}}"
 							],
 							"path": [
-								"products"
+								"auth",
+								"me"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Qantity minus",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Should not allow negative quantity\", function () {\r",
+									"    pm.expect(pm.response.code).to.be.oneOf([400, 422]);\r",
+									"});\r",
+									"\r",
+									"//for MOCK API\r",
+									"\r",
+									"let json = pm.response.json ();\r",
+									"\r",
+									"pm.test(\"API allows negative quantity\", function () {\r",
+									"    pm.expect(json.products[0].quantity).to.be.below(0);\r",
+									"});"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"userId\": {{user_id}},\r\n    \"products\": [\r\n        {\r\n            \"id\": {{product_id}},\r\n            \"quantity\": -7\r\n        }\r\n    ]\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{base_url}}/carts/add",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"carts",
+								"add"
 							]
 						}
 					},
 					"response": []
 				}
 			]
+		},
+		{
+			"name": "Collection runner",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"collection executed successfully\", function () {\r",
+							"    pm.expect(true).to.be.true;\r",
+							"});"
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{base_url}}/products",
+					"host": [
+						"{{base_url}}"
+					],
+					"path": [
+						"products"
+					]
+				}
+			},
+			"response": []
 		}
 	],
 	"auth": {
@@ -1240,6 +1377,13 @@
 					""
 				]
 			}
+		}
+	],
+	"variable": [
+		{
+			"key": "base_url",
+			"value": "https://dummyjson.com",
+			"type": "string"
 		}
 	]
 }
