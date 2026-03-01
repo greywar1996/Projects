@@ -74,8 +74,6 @@ username(string)
 
 **Title:** Получение списка товаров
 
-**Preconditions:** Пользователь авторизован
-
 **Steps to reproduce:**
 1. Отправить GET /products
 
@@ -92,8 +90,6 @@ limit (number)
 ### ID: TC-006
 
 **Title:** Проверка структуры объекта товара
-
-**Preconditions:** Пользователь авторизован
 
 **Steps to reproduce:**
 1. Отправить GET /products
@@ -112,8 +108,6 @@ description (string)
 
 **Title:** Получение товара по валидному ID
 
-**Preconditions:** Пользователь авторизован
-
 **Steps to reproduce:**
 1. Отправить GET /products/1
 
@@ -126,8 +120,6 @@ description (string)
 ### ID: TC-008
 
 **Title:** Получение товара по несуществуещему ID
-
-**Preconditions:** Пользователь авторизован
 
 **Steps to reproduce:**
 1. Отправить GET /products/999999
@@ -193,7 +185,7 @@ description (string)
 1. Отправить DELETE /products/{id}
 
 **Expected result:**
-Статус код 200
+Статус код 204
 Товар помечен как удаленный
 
 **Priority:** Средний
@@ -300,8 +292,6 @@ total = сумма price * quantity
 
 **Title:** Проверка времени ответа API
 
-**Preconditions:** Пользователь существует в системе
-
 **Steps to reproduce:**
 1. Отправить любой GET запрос
 
@@ -313,8 +303,6 @@ total = сумма price * quantity
 ### ID: TC-020
 
 **Title:** Проверка Content-type ответа
-
-**Preconditions:** Пользователь существует в системе
 
 **Steps to reproduce:**
 1. Отправить GET /products
